@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources tools:keep="@string/gcm_defaultSenderId,@string/google_storage_bucket,@string/project_id,@string/google_api_key,@string/google_crash_reporting_api_key,@string/google_app_id,@string/default_web_client_id" xmlns:tools="http://schemas.android.com/tools">
+  <string name="gcm_defaultSenderId" translatable="false">370040399828</string>
+  <string name="google_storage_bucket" translatable="false">bluezone-mymall.appspot.com</string>
+  <string name="project_id" translatable="false">bluezone-mymall</string>
+  <string name="google_api_key" translatable="false">AIzaSyDayFDVkVjNX74273NYIwiP2VjRyssjZ6o</string>
+  <string name="google_crash_reporting_api_key" translatable="false">AIzaSyDayFDVkVjNX74273NYIwiP2VjRyssjZ6o</string>
+  <string name="google_app_id" translatable="false">1:370040399828:android:64c57a05d8cd7215f99841</string>
+  <string name="default_web_client_id" translatable="false">370040399828-rboc8h7dqmaiqe45qc66sajhc1fq663k.apps.googleusercontent.com</string>
+</resources>
