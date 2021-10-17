@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "370040399828",
+    "project_id": "bluezone-mymall",
+    "storage_bucket": "bluezone-mymall.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:370040399828:android:64c57a05d8cd7215f99841",
+        "android_client_info": {
+          "package_name": "com.bluezone.mymall"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "370040399828-rboc8h7dqmaiqe45qc66sajhc1fq663k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDayFDVkVjNX74273NYIwiP2VjRyssjZ6o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "370040399828-rboc8h7dqmaiqe45qc66sajhc1fq663k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,25 @@
+fileFormatVersion: 2
+guid: 7b73afc74a99f154d9517154b8cedd51
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: DIN Next LT Arabic
+  fontNames:
+  - DIN Next LT Arabic
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: aa55eb61b2a69e140a2db21a05af1d89, type: 3}
+  - {fileID: 12800000, guid: e9692fe2cf329b44489527c1146fb4be, type: 3}
+  - {fileID: 12800000, guid: a0624914594e4f340950ee38873adb46, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
