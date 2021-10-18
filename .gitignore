@@ -5,7 +5,6 @@
 [Ll]ibrary/
 [Tt]emp/
 [Oo]bj/
-[Bb]uilds/
 [Ll]ogs/
 [Mm]emoryCaptures/
 
@@ -51,7 +50,7 @@ ExportedObj/
 sysinfo.txt
 
 # Builds
-*.apk
+
 *.unitypackage
 
 # Crashlytics generated file
