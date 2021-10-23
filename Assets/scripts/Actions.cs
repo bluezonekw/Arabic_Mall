@@ -4,7 +4,6 @@ using System.Collections;
 public class Actions : MonoBehaviour {
 
 	public Animator[] animator;
-
 	const int countOfDamageAnimations = 3;
 	int lastDamageAnimation = -1;
 
@@ -26,14 +25,17 @@ public class Actions : MonoBehaviour {
         animator[PlayerPrefs.GetInt("MallGender")].gameObject.SetActive(true);
     }
 	public void Stay () {
-		animator[PlayerPrefs.GetInt("MallGender")].SetBool("Aiming", false);
-		animator[PlayerPrefs.GetInt("MallGender")].SetFloat ("Speed", 0f);
-		}
 
-	public void Walk (float value) {
+        animator[PlayerPrefs.GetInt("MallGender")].SetBool("Aiming", false);
+            animator[PlayerPrefs.GetInt("MallGender")].SetFloat("Speed", 0f);
+        Debug.Log(animator[0].avatar.name);
+    }
+
+    public void Walk (float value) {
 
 
         animator[PlayerPrefs.GetInt("MallGender")].SetFloat ("Forward", value);
+
         if (value >= .7f)
         {
             this.gameObject.GetComponent<OwnThirdPersonController>().walkSpeed = 5f;

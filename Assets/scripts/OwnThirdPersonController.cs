@@ -77,7 +77,7 @@ public class OwnThirdPersonController : MonoBehaviour {
 
         CameraAngleY += TouchField.TouchDist.x * CameraAngleSpeed;
         CameraPosY = Mathf.Clamp(CameraPosY - TouchField.TouchDist.y * CameraPosSpeed, 0, 5f);
-      
+     
         Camera.main.transform.position = transform.position + Quaternion.AngleAxis(CameraAngleY, Vector3.up) * new Vector3(0, CameraPosY+1f, -5.5f);
         Camera.main.transform.rotation = Quaternion.LookRotation(transform.position + Vector3.up * 2f - Camera.main.transform.position, Vector3.up);
         MoveCamera();
