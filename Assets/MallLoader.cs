@@ -16,7 +16,6 @@ public class MallLoader : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(T1.position.z);
 
         if (T1.position.z < 10 )
         {
