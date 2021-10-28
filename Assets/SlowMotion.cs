@@ -23,7 +23,7 @@ public class SlowMotion : MonoBehaviour
         }
         if (!stay)
         {
-            this.transform.Translate(Vector3.down * Time.deltaTime, Space.Self);
+            this.transform.Translate(Vector3.down * Time.deltaTime*2.0f, Space.Self);
         }
         else
         {

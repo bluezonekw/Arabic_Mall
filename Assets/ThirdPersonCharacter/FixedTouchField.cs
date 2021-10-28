@@ -4,14 +4,13 @@ using UnityEngine.EventSystems;
 public class FixedTouchField : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
     [HideInInspector]
-    public Vector2 TouchDist;
+    public static Vector2 TouchDist;
     [HideInInspector]
     public Vector2 PointerOld;
     [HideInInspector]
     protected int PointerId;
     [HideInInspector]
     public bool Pressed;
-    public Animator Animator;
     // Use this for initialization
     void Start()
     {
@@ -23,7 +22,6 @@ public class FixedTouchField : MonoBehaviour, IPointerDownHandler, IPointerUpHan
     {
         if (Pressed)
         {
-            Animator.enabled = !Animator.enabled;
             if (PointerId >= 0 && PointerId < Input.touches.Length)
             {
                 TouchDist = Input.touches[PointerId].position - PointerOld;
@@ -31,7 +29,6 @@ public class FixedTouchField : MonoBehaviour, IPointerDownHandler, IPointerUpHan
             }
             else
             {
-                Animator.enabled = !Animator.enabled;
                 TouchDist = new Vector2(Input.mousePosition.x, Input.mousePosition.y) - PointerOld;
                 PointerOld = Input.mousePosition;
             }

@@ -2,11 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 public class OwnThirdPersonController : MonoBehaviour {
 
 
-    public FixedJoystick LeftJoystick;
-    public FixedTouchField TouchField;
+    private Player playerinput;
+ //   public FixedTouchField TouchField;
     protected Rigidbody Rigidbody;
 
     protected Actions Actions;
@@ -23,10 +24,27 @@ public class OwnThirdPersonController : MonoBehaviour {
 
     protected float Cooldown;
 
+
+    private void Awake()
+    {
+        playerinput = new Player();
+
+    }
+    private void OnEnable()
+    {
+        playerinput.Enable();
+    }
+    private void OnDisable()
+    {
+
+        playerinput.Disable();
+    }
+
     // Use this for initialization
     void Start ()
     {
-       // Camera.main.cullingMask = 1 << 0;
+       
+        // Camera.main.cullingMask = 1 << 0;
         maxCameraDistance = Camera.main.transform.localPosition.z-.5f;
 
         Actions = GetComponent<Actions>();
@@ -47,13 +65,13 @@ public class OwnThirdPersonController : MonoBehaviour {
 
         Vector3 rayDir = Camera.main.transform.position - cameraPole.position;
         
+        
         Debug.DrawRay(cameraPole.position, rayDir, Color.red);
         // Check if the camera would be colliding with any obstacle
 
 
         if (Physics.Raycast(cameraPole.position, rayDir, out RaycastHit hit, Mathf.Abs(maxCameraDistance-1f), cameraObstacleLayers))
         {
-
             // Camera.main.transform.position = cameraPole.position   + Quaternion.AngleAxis(CameraAngleY, Vector3.up) * hit.point;
             Camera.main.transform.position = hit.point;
             Camera.main.transform.rotation = Quaternion.LookRotation(transform.position + Vector3.up * 2f - Camera.main.transform.position, Vector3.up);
@@ -68,27 +86,27 @@ public class OwnThirdPersonController : MonoBehaviour {
     }
     private void Walk()
     {
-         var input = new Vector3(LeftJoystick.inputVector.x, 0, LeftJoystick.inputVector.y);
+         var input = new Vector3(playerinput.PlayerMan.MoveAround.ReadValue<Vector2>().x, 0, playerinput.PlayerMan.MoveAround.ReadValue<Vector2>().y);
         var vel = Quaternion.AngleAxis(CameraAngleY, Vector3.up) * input * walkSpeed;
         
         transform.rotation = Quaternion.AngleAxis(CameraAngleY + Vector3.SignedAngle(Vector3.forward, input.normalized + Vector3.forward * 0.0001f, Vector3.up) , Vector3.up);
        
         Rigidbody.velocity = new Vector3(vel.x, Rigidbody.velocity.y, vel.z );
 
-        CameraAngleY += TouchField.TouchDist.x * CameraAngleSpeed;
-        CameraPosY = Mathf.Clamp(CameraPosY - TouchField.TouchDist.y * CameraPosSpeed, 0, 5f);
+      //  CameraAngleY += FixedTouchField.TouchDist.x * CameraAngleSpeed;
+    //   CameraPosY = Mathf.Clamp(CameraPosY - FixedTouchField.TouchDist.y * CameraPosSpeed, 0, 5f);
      
         Camera.main.transform.position = transform.position + Quaternion.AngleAxis(CameraAngleY, Vector3.up) * new Vector3(0, CameraPosY+1f, -5.5f);
         Camera.main.transform.rotation = Quaternion.LookRotation(transform.position + Vector3.up * 2f - Camera.main.transform.position, Vector3.up);
         MoveCamera();
-        if (Mathf.Abs(LeftJoystick.inputVector.x)> Mathf.Abs(LeftJoystick.inputVector.y))
+        if (Mathf.Abs(playerinput.PlayerMan.MoveAround.ReadValue<Vector2>().x) > Mathf.Abs(playerinput.PlayerMan.MoveAround.ReadValue<Vector2>().y))
         {
 
-            Actions.Walk(Mathf.Abs(LeftJoystick.inputVector.x));
+            Actions.Walk(Mathf.Abs(playerinput.PlayerMan.MoveAround.ReadValue<Vector2>().x));
         }
         else
         {
-            Actions.Walk(Mathf.Abs(LeftJoystick.inputVector.y));
+            Actions.Walk(Mathf.Abs(playerinput.PlayerMan.MoveAround.ReadValue<Vector2>().y));
 
         }
     }

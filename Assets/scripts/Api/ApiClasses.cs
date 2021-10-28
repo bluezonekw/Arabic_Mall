@@ -14,19 +14,19 @@ public class ApiClasses : MonoBehaviour
 
 
     bool popUpFlag, failed, splashfinished;
-    public static string ApiToken, UserName, EmailReg, PhoneReg;
+    public static Login Login;
+    public static Register Register;
     String JasonString;
-    AuthenticationAPi AuthenticationAPi;
-    AuthenticationAPiFailed AuthenticationAPiFailed;
-    AuthenticationAPiFailedsignup AuthenticationAPiFailedsignup;
-    SignUpToApi SignUpToApi;
     string msg;
     public InputField Sign_In_Email, Sign_In_Password, Sign_UP_Email, Sign_Up_Password, NameInput, PhoneInput;
     public GameObject popup, lodaing, LoginObj, SignUpobj, CompleteProfileobj, splash;
-    public Toggle Toggle;
+    public Toggle Polcies,Male,Female;
+    public float Waittime;
+    public Dropdown dropdown;
     private void Start()
     {
-        try {
+        try
+        {
             SignUpobj.SetActive(false);
             CompleteProfileobj.SetActive(false);
         }
@@ -37,20 +37,26 @@ public class ApiClasses : MonoBehaviour
     }
     private void Update()
     {
-        if (!splash.active && !splashfinished)
-        {
-            LoginObj.SetActive(true);
-
-            splashfinished = true;
-        }
-
-
         if (popUpFlag)
         {
             StartCoroutine(showPopUp(msg));
             popUpFlag = false;
+        }
+        if (Waittime < 0 &&!splashfinished)
+        {            splashfinished = true;
+
+            splash.SetActive(false);
+            LoginObj.SetActive(true);
+        }
+        else if (Waittime > 0 )
+        {
+            splash.SetActive(true);
+
+            Waittime -= Time.deltaTime;
+
 
         }
+
     }
     IEnumerator showPopUp(string msg)
     {
@@ -62,7 +68,7 @@ public class ApiClasses : MonoBehaviour
         yield return new WaitForSeconds(0.0f);
     }
 
-    public void startsignup()
+    public void Register_Email_Password()
     {
         if (string.IsNullOrEmpty(Sign_Up_Password.text) || string.IsNullOrEmpty(Sign_UP_Email.text))
         {
@@ -78,24 +84,11 @@ public class ApiClasses : MonoBehaviour
 
     }
 
-    public String NameStore()
-    {
 
-        return UserName;
 
-    }
-    public String EmailStore()
+    public void CompleteRegister()
     {
-        return EmailReg;
-    }
-    public String PhoneStore()
-    {
-
-        return PhoneReg;
-    }
-    public void SignUp()
-    {
-        if (!Toggle.isOn)
+        if (!Polcies.isOn)
         {
             msg = "ÌÃ» «·„Ê«›ﬁ… ⁄·Ì «·‘—Êÿ Ê«·«Õﬂ«„";
             popUpFlag = true;
@@ -104,6 +97,7 @@ public class ApiClasses : MonoBehaviour
         var client = new RestClient("https://mall.openshoop.com/api/v1/register");
         client.Timeout = -1;
         var request = new RestRequest(Method.POST);
+      
         request.AddHeader("Accept", "application/json");
         request.AlwaysMultipartFormData = true;
         request.AddParameter("name", NameInput.text);
@@ -112,69 +106,61 @@ public class ApiClasses : MonoBehaviour
         request.AddParameter("country_id", "10");
         request.AddParameter("password", Sign_Up_Password.text);
         request.AddParameter("password_confirmation", Sign_Up_Password.text);
+        if (Male.isOn)
+        {
+            request.AddParameter("gander", 0);
+
+
+        }
+
+        if (Female.isOn)
+        {
+            request.AddParameter("gander", 1);
+
+
+
+        }
+        request.AddParameter("address", dropdown.options[dropdown.value].text);
+
         IRestResponse response = client.Execute(request);
-        //        Console.WriteLine(response.Content);
-        try
+
+        Register = JsonConvert.DeserializeObject<Register>(response.Content);
+
+        print(NameInput.text + "//" + Sign_UP_Email.text + "///" + PhoneInput.text + "///" + Sign_Up_Password.text + "//"+ dropdown.options[dropdown.value].text);
+
+
+
+
+
+
+
+        if (Register.state == 0)
         {
-            SignUpToApi = JsonConvert.DeserializeObject<SignUpToApi>(response.Content);
-            failed = false;
-        }
-        catch
-        {
-            try
-            {
-                AuthenticationAPiFailedsignup = JsonConvert.DeserializeObject<AuthenticationAPiFailedsignup>(response.Content);
-                failed = true;
-
-            }
-            catch
-            {
-
-            }
-        }
 
 
 
-        if (!failed)
-        {
-            if (SignUpToApi.state == 0)
-            {
-                if (string.IsNullOrEmpty(Sign_Up_Password.text) || string.IsNullOrEmpty(Sign_UP_Email.text))
-                {
-                    msg = "ÌÃ» „·¡ «·ÕﬁÊ·";
-                    popUpFlag = true;
-                    return;
 
-                }
+            msg = Register.msg;
+            popUpFlag = true;
+            return;
 
-
-                else
-                {
-                    msg = SignUpToApi.msg;
-                    popUpFlag = true;
-                    return;
-                }
-
-            }
-            else if (SignUpToApi.state == 1)
-            {
-                ApiToken = SignUpToApi.data.api_token;
-                UserName = SignUpToApi.data.clients.name;
-                EmailReg = SignUpToApi.data.clients.email;
-                PhoneReg = SignUpToApi.data.clients.phone;
-                msg = SignUpToApi.msg;
-                popUpFlag = true;
-                lodaing.SetActive(true);
-                SceneManager.LoadScene("mall");
-
-            }
 
         }
-        
-    
+        if (Register.state == 1)
+        {
+            msg = Register.msg;
+            popUpFlag = true;
+            lodaing.SetActive(true);
+            SceneManager.LoadScene("mall");
 
-}
-    public void Login()
+        }
+
+    }
+
+
+
+
+    public void Login_To_Mall()
     {
 
 
@@ -184,83 +170,43 @@ public class ApiClasses : MonoBehaviour
         request.RequestFormat = DataFormat.Json;
         request.AddJsonBody(new { password = Sign_In_Password.text, email = Sign_In_Email.text });
         IRestResponse response = client.Execute(request);
-        print(response.Content);
-        try
+
+        Login = JsonConvert.DeserializeObject<Login>(response.Content);
+
+
+        if (string.IsNullOrEmpty(Sign_In_Password.text) || string.IsNullOrEmpty(Sign_In_Email.text))
         {
-            AuthenticationAPi = JsonConvert.DeserializeObject<AuthenticationAPi>(response.Content);
-            failed = false;
+            msg = "ÌÃ» „·¡ «·ÕﬁÊ·";
+            popUpFlag = true;
+            return;
         }
-        catch
+
+        if (Login.state == 0)
         {
-            try
-            {
-                AuthenticationAPiFailed = JsonConvert.DeserializeObject<AuthenticationAPiFailed>(response.Content);
-                failed = true;
 
-            }
-            catch
-            {
+            msg = Login.msg;
+            popUpFlag = true;
+            return;
 
-            }
-        }
-        if (!failed)
-        {
-            if (AuthenticationAPi.msg == "»Ì«‰«  «·„” Œœ„ €Ì— ’ÕÌÕ…")
-            {
-                if (string.IsNullOrEmpty(Sign_In_Password.text) || string.IsNullOrEmpty(Sign_In_Email.text))
-                {
-                    msg = "ÌÃ» „·¡ «·ÕﬁÊ·";
-                    popUpFlag = true;
-                    return;
-                }
-                else
-                {
-                    msg = "ÌÊÃœ Œÿ√ »«·≈Ì„Ì·/«·»«”Ê—œ";
-                    popUpFlag = true;
-                    return;
-
-                }
-
-            }
-            else
-            {
-                ApiToken = AuthenticationAPi.data.api_token;
-                UserName = AuthenticationAPi.data.client.name;
-                EmailReg = AuthenticationAPi.data.client.email;
-                PhoneReg = AuthenticationAPi.data.client.phone;
-                lodaing.SetActive(true);
-                SceneManager.LoadScene("mall");
-
-            }
-        }
-        else
-        {
-            if (AuthenticationAPiFailed.msg == "»Ì«‰«  «·„” Œœ„ €Ì— ’ÕÌÕ…")
-            {
-                if (string.IsNullOrEmpty(Sign_In_Password.text) || string.IsNullOrEmpty(Sign_In_Email.text))
-                {
-                    msg = "ÌÃ» „·¡ «·ÕﬁÊ·";
-                    popUpFlag = true;
-                    return;
-                }
-                else
-                {
-                    msg = "ÌÊÃœ Œÿ√ »«·≈Ì„Ì·/«·»«”Ê—œ";
-                    popUpFlag = true;
-                    return;
-
-
-                }
-
-            }
-          
-        
         }
 
 
-        
+        if (Login.state == 1)
+        {
+
+
+            lodaing.SetActive(true);
+            SceneManager.LoadScene("mall");
+
+        }
+
+
+
+
+
+
+
+
+
     }
-   
-
-
 }

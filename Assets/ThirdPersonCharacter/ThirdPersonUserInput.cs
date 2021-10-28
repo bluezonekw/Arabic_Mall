@@ -84,8 +84,8 @@ public class ThirdPersonUserInput : MonoBehaviour
 
 
 
-       CameraAngle += TouchField.TouchDist.x * CameraAngleSpeed;
-         CameraAngley += TouchField.TouchDist.y * CameraAngleSpeed;
+       CameraAngle += FixedTouchField.TouchDist.x * CameraAngleSpeed;
+         CameraAngley += FixedTouchField.TouchDist.y * CameraAngleSpeed;
 
          camPosition = transform.position + Quaternion.AngleAxis(CameraAngle, Vector3.up) * offset; //Default
 
