@@ -25,6 +25,14 @@ public class ApiClasses : MonoBehaviour
     public Dropdown dropdown;
     private void Start()
     {
+        SaveScript.LoadData();
+        if (GameData.GameEmail!= null  && GameData.GamePassword != null)
+        {
+            Sign_In_Email.text = GameData.GameEmail;
+            Sign_In_Password.text = GameData.GamePassword;
+            Login_To_Mall();
+
+        }
         try
         {
             SignUpobj.SetActive(false);
@@ -77,6 +85,8 @@ public class ApiClasses : MonoBehaviour
         }
         else
         {
+            Sign_In_Email.text = Sign_UP_Email.text;
+            Sign_In_Password.text = Sign_Up_Password.text;
             SignUpobj.SetActive(false);
             CompleteProfileobj.SetActive(true);
 
@@ -150,6 +160,7 @@ public class ApiClasses : MonoBehaviour
         {
             msg = Register.msg;
             popUpFlag = true;
+            
             lodaing.SetActive(true);
             SceneManager.LoadScene("mall");
 

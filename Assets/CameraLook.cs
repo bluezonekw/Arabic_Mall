@@ -9,9 +9,9 @@ public class CameraLook : MonoBehaviour
 {
 	private CinemachineFreeLook Cinemachine;
 	private Player playerinput;
-
+	bool isclick = false;
 	[SerializeField]
-	private float lookspeed = 1.0f;
+	private float lookspeed = 0.05f;
 
     private void Awake()
     {
@@ -31,12 +31,13 @@ public class CameraLook : MonoBehaviour
 
 	void Update()
 	{
+      
 		Vector2 delta = playerinput.PlayerMan.Lock.ReadValue<Vector2>();
 		
 		
-		Cinemachine.m_XAxis.Value += delta.x * lookspeed *200* Time.deltaTime;
+		Cinemachine.m_XAxis.Value += delta.x * lookspeed *50;
 
-		Cinemachine.m_YAxis.Value += delta.y * lookspeed * Time.deltaTime;
+		Cinemachine.m_YAxis.Value += delta.y * lookspeed *0.5f;
 
 
 	}

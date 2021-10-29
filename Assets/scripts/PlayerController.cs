@@ -247,10 +247,10 @@ public class PlayerController : MonoBehaviour
 
     private Player playerinput;
 
-    public CharacterController controller;
+    private Rigidbody controller;
     private Vector3 playerVelocity;
     private bool groundedPlayer;
-    private Transform Cameramain,child;
+    private Transform Cameramain;
     [SerializeField]
     private float playerSpeed = 2.0f;
     [SerializeField]
@@ -287,14 +287,25 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         Cameramain = Camera.main.transform;
-        controller = gameObject.AddComponent<CharacterController>();
+        controller = gameObject.AddComponent<Rigidbody>();
        
 
     }
-
+    void OnTriggerStay(Collider other)
+    {
+        if (other.transform.tag == "Ground")
+        {
+            groundedPlayer = true;
+            Debug.Log("Grounded");
+        }
+        else
+        {
+            groundedPlayer = false;
+            Debug.Log("Not Grounded!");
+        }
+    }
     void Update()
     {
-        groundedPlayer =controller.isGrounded;
         if (groundedPlayer && playerVelocity.y < 0)
         {
             playerVelocity.y = 0f;
@@ -305,14 +316,14 @@ public class PlayerController : MonoBehaviour
         Vector3 move =(Cameramain.forward *Movementinput.y  + Cameramain.right * Movementinput.x) ;
         move.y = 0;
 
-        controller.Move(move * Time.deltaTime * playerSpeed);
+        controller.MovePosition(move * Time.deltaTime * playerSpeed);
 
   
 
         playerVelocity.y += gravityValue * Time.deltaTime;
 
 
-        controller.Move(playerVelocity * Time.deltaTime);
+        controller.MovePosition(playerVelocity * Time.deltaTime);
 
 
 
@@ -321,8 +332,7 @@ public class PlayerController : MonoBehaviour
         {
             Quaternion rotation = Quaternion.Euler(new Vector3(child.localEulerAngles.x,Cameramain.localEulerAngles.y,child.localEulerAngles.z));
             child.rotation = Quaternion.Lerp(child.rotation, rotation, Time.deltaTime * RotationSpeed);
-        }
-*/
+        }*/
 }
 
 
