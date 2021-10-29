@@ -2,9 +2,10 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
-[RequireComponent(typeof(GameData))]
 public class SaveScript : MonoBehaviour
 {
+    public static string GamePassword { get; set; }
+    public static string GameEmail { get; set; }
 
     private static string savePath;
 
@@ -17,8 +18,8 @@ public class SaveScript : MonoBehaviour
     {
         var save = new Save()
         {
-            SavedEmail = GameData.GameEmail,
-            SavedPassword = GameData.GamePassword
+            SavedEmail = GameEmail,
+            SavedPassword = GamePassword
         };
         DeleteSave();
         var binaryFormatter = new BinaryFormatter();
@@ -54,9 +55,9 @@ public class SaveScript : MonoBehaviour
                 save = (Save)binaryFormatter.Deserialize(fileStream);
             }
 
-            GameData.GamePassword = save.SavedPassword;
-            GameData.GameEmail = save.SavedEmail;
-            GameData.ShowData();
+            GamePassword = save.SavedPassword;
+            GameEmail = save.SavedEmail;
+            
 
             Debug.Log("Data Loaded");
         }

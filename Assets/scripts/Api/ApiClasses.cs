@@ -26,10 +26,10 @@ public class ApiClasses : MonoBehaviour
     private void Start()
     {
         SaveScript.LoadData();
-        if (GameData.GameEmail!= null  && GameData.GamePassword != null)
+        if (SaveScript.GameEmail!= null  && SaveScript.GamePassword != null)
         {
-            Sign_In_Email.text = GameData.GameEmail;
-            Sign_In_Password.text = GameData.GamePassword;
+            Sign_In_Email.text = SaveScript.GameEmail;
+            Sign_In_Password.text = SaveScript.GamePassword;
             Login_To_Mall();
 
         }
@@ -64,7 +64,8 @@ public class ApiClasses : MonoBehaviour
 
 
         }
-
+        SaveScript.GameEmail = Sign_In_Email.text;
+        SaveScript.GamePassword = Sign_In_Password.text;
     }
     IEnumerator showPopUp(string msg)
     {
@@ -160,7 +161,7 @@ public class ApiClasses : MonoBehaviour
         {
             msg = Register.msg;
             popUpFlag = true;
-            
+            SaveScript.SaveData();
             lodaing.SetActive(true);
             SceneManager.LoadScene("mall");
 
@@ -205,7 +206,7 @@ public class ApiClasses : MonoBehaviour
         if (Login.state == 1)
         {
 
-
+            SaveScript.SaveData();
             lodaing.SetActive(true);
             SceneManager.LoadScene("mall");
 
