@@ -45,6 +45,7 @@ public class ApiClasses : MonoBehaviour
     }
     private void Update()
     {
+      
         if (popUpFlag)
         {
             StartCoroutine(showPopUp(msg));
@@ -105,35 +106,42 @@ public class ApiClasses : MonoBehaviour
             popUpFlag = true;
             return;
         }
-        var client = new RestClient("https://mall.openshoop.com/api/v1/register");
+      
+        
+
+
+        var client = new RestClient("https://mall.openshoop.com/api/V1/register");
         client.Timeout = -1;
         var request = new RestRequest(Method.POST);
-      
-        request.AddHeader("Accept", "application/json");
+        request.AddHeader("password_api", "mall_2021_m3m");
+        request.AddHeader("lang_api", "ar");
         request.AlwaysMultipartFormData = true;
         request.AddParameter("name", NameInput.text);
         request.AddParameter("email", Sign_UP_Email.text);
-        request.AddParameter("phone", PhoneInput.text);
-        request.AddParameter("country_id", "10");
         request.AddParameter("password", Sign_Up_Password.text);
         request.AddParameter("password_confirmation", Sign_Up_Password.text);
+        request.AddParameter("phone", PhoneInput.text);
+        request.AddParameter("address", dropdown.options[dropdown.value].text);
+
         if (Male.isOn)
         {
-            request.AddParameter("gander", 0);
+            request.AddParameter("gander", "0");
 
 
         }
 
         if (Female.isOn)
         {
-            request.AddParameter("gander", 1);
+            request.AddParameter("gander", "1");
 
 
 
         }
-        request.AddParameter("address", dropdown.options[dropdown.value].text);
+        lodaing.SetActive(true);
 
         IRestResponse response = client.Execute(request);
+
+
 
         Register = JsonConvert.DeserializeObject<Register>(response.Content);
 
@@ -143,26 +151,26 @@ public class ApiClasses : MonoBehaviour
 
 
 
+        print("REgisterStatues   :" + Register.statsu+"    / MEssage  :   "+Register.message);
 
-
-        if (Register.state == 0)
+        if (Register.statsu == 0)
         {
 
 
 
 
-            msg = Register.msg;
+            msg = Register.message;
             popUpFlag = true;
+            lodaing.SetActive(false);
             return;
 
 
         }
-        if (Register.state == 1)
+        if (Register.statsu == 1)
         {
-            msg = Register.msg;
+            msg = Register.message;
             popUpFlag = true;
             SaveScript.SaveData();
-            lodaing.SetActive(true);
             SceneManager.LoadScene("mall");
 
         }
@@ -175,14 +183,16 @@ public class ApiClasses : MonoBehaviour
     public void Login_To_Mall()
     {
 
-
-        var client = new RestClient("https://mall.openshoop.com/api/v1/login");
+        var client = new RestClient("https://mall.openshoop.com/api/V1/login");
         client.Timeout = -1;
         var request = new RestRequest(Method.POST);
-        request.RequestFormat = DataFormat.Json;
-        request.AddJsonBody(new { password = Sign_In_Password.text, email = Sign_In_Email.text });
+        request.AddHeader("password", "mall_2021_m3m");
+        request.AddHeader("lang_api", "ar");
+        request.AlwaysMultipartFormData = true;
+        request.AddParameter("email", Sign_In_Email.text);
+        request.AddParameter("password", Sign_In_Password.text);
+        lodaing.SetActive(true);
         IRestResponse response = client.Execute(request);
-
         Login = JsonConvert.DeserializeObject<Login>(response.Content);
 
 
@@ -193,21 +203,21 @@ public class ApiClasses : MonoBehaviour
             return;
         }
 
-        if (Login.state == 0)
+        if (Login.statsu == 0)
         {
 
-            msg = Login.msg;
+            msg = Login.message;
             popUpFlag = true;
+            lodaing.SetActive(false);
             return;
 
         }
 
 
-        if (Login.state == 1)
+        if (Login.statsu == 1)
         {
 
             SaveScript.SaveData();
-            lodaing.SetActive(true);
             SceneManager.LoadScene("mall");
 
         }

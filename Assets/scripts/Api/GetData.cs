@@ -14,11 +14,11 @@ public class GetData : MonoBehaviour
 
         try
         {
-            return ApiClasses.Register.data.client.address;
+            return ApiClasses.Register.data.user.address;
         }
         catch
         {
-            return ApiClasses.Login.data.client.address;
+            return ApiClasses.Login.data.original.user.address;
 
         }
 
@@ -29,11 +29,12 @@ public class GetData : MonoBehaviour
 
         try
         {
-            if (ApiClasses.Register.data.client.gander ==0)
+            if (ApiClasses.Register.data.user.gander =="0")
             {
                 Male.isOn = true;
+
             }
-            if (ApiClasses.Register.data.client.gander == 1)
+            if (ApiClasses.Register.data.user.gander == "1")
             {
                 Female.isOn = true;
             }
@@ -41,14 +42,16 @@ public class GetData : MonoBehaviour
         catch
         {
 
-            if (ApiClasses.Login.data.client.gander == 0)
+            if (ApiClasses.Login.data.original.user.gander == 0)
             {
                 Male.isOn = true;
+                Debug.Log("Male hhhhhhhhhhhhhhhhh");
 
             }
-            if (ApiClasses.Register.data.client.gander == 1)
+            if (ApiClasses.Login.data.original.user.gander == 1)
             {
                 Female.isOn = true;
+                Debug.Log("FeMale hhhhhhhhhhhhhhhhh");
             }
 
         }
@@ -58,11 +61,11 @@ public class GetData : MonoBehaviour
     {
         try
         {
-            return ApiClasses.Register.data.client.name;
+            return ApiClasses.Register.data.user.name;
         }
         catch
         {
-            return ApiClasses.Login.data.client.name;
+            return ApiClasses.Login.data.original.user.name;
 
         }
     }
@@ -70,11 +73,11 @@ public class GetData : MonoBehaviour
     {
         try
         {
-            return ApiClasses.Register.data.client.email;
+            return ApiClasses.Register.data.user.email;
         }
         catch
         {
-            return ApiClasses.Login.data.client.email;
+            return ApiClasses.Login.data.original.user.email;
         }
     }
     public string Phone()
@@ -82,11 +85,11 @@ public class GetData : MonoBehaviour
 
         try
         {
-            return ApiClasses.Register.data.client.phone;
+            return ApiClasses.Register.data.user.phone;
         }
         catch
         {
-            return ApiClasses.Login.data.client.phone;
+            return ApiClasses.Login.data.original.user.phone;
         }
     }
     // Start is called before the first frame update
@@ -95,10 +98,16 @@ public class GetData : MonoBehaviour
         NameI.GetComponent<ArabicText>().Text =  UserName();
         EmailI.text = Email();
         PhoneI.text = Phone();
-        Gender();
         AdressI.text = Adress();
     }
+    private void Awake()
+    {
+        Gender();
 
+
+
+
+    }
     // Update is called once per frame
     void Update()
     {

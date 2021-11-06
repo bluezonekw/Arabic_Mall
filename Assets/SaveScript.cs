@@ -1,63 +1,106 @@
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SaveScript : MonoBehaviour
 {
     public static string GamePassword { get; set; }
     public static string GameEmail { get; set; }
 
-    private static string savePath;
+    public static string savePath, textView;
+    public Text Pathtext;
 
     void Start()
     {
-        savePath = Application.persistentDataPath + "/gamesave.save";
+        savePath = Application.persistentDataPath+ Path.DirectorySeparatorChar + "savedGames.sx";
     }
-
+    private void Update()
+    {
+        Pathtext.text = textView;
+    }
     public static void SaveData()
     {
-        var save = new Save()
+        savePath = Application.persistentDataPath + Path.DirectorySeparatorChar + "savedGames.sx";
+
+        Save save = new Save()
         {
             SavedEmail = GameEmail,
             SavedPassword = GamePassword
         };
         DeleteSave();
-        var binaryFormatter = new BinaryFormatter();
-        using (var fileStream = File.Create(savePath))
+        BinaryFormatter bf = new BinaryFormatter();
+        FileStream fileStream;
+        try
         {
-            binaryFormatter.Serialize(fileStream, save);
+            fileStream = File.Create(savePath);
+            bf.Serialize(fileStream, save);
+            fileStream.Close();
+            Debug.Log("Data Saved");
+            FileInfo fileInfo = new FileInfo(fileStream.Name);
+            print( "Data Saved in : (       " + savePath + "       )  " );
+        }
+        catch
+        {
+            print("excreate");
         }
 
-        Debug.Log("Data Saved");
+
+
+
+
+
     }
 
 
     public static void DeleteSave()
     {
+        savePath = Application.persistentDataPath + Path.DirectorySeparatorChar + "savedGames.sx";
+
         if (File.Exists(savePath))
         {
             //SaveLoad.savedGames.Clear();
-
             File.Delete(savePath);
+            GameEmail = "";
+            GamePassword = "";
+            print( "Data delete in : (       " + savePath + "       )  ");
+
+        }
+        else
+        {
+            print("notdelete");
 
         }
     }
 
     public static void LoadData()
     {
+        savePath = Application.persistentDataPath + Path.DirectorySeparatorChar + "savedGames.sx";
+
         if (File.Exists(savePath))
         {
             Save save;
 
-            var binaryFormatter = new BinaryFormatter();
-            using (var fileStream = File.Open(savePath, FileMode.Open))
+            BinaryFormatter bf = new BinaryFormatter();
+            try
             {
-                save = (Save)binaryFormatter.Deserialize(fileStream);
+                FileStream fileStream = File.Open(savePath, FileMode.Open);
+                save = (Save)bf.Deserialize(fileStream);
+
+                fileStream.Close();
+                GamePassword = save.SavedPassword;
+                GameEmail = save.SavedEmail;
+
+                print( "Data loaded from : (       " + savePath + "       )  ");
+
+            }
+            catch
+            {
+                print("exOpen");
+
             }
 
-            GamePassword = save.SavedPassword;
-            GameEmail = save.SavedEmail;
-            
+
 
             Debug.Log("Data Loaded");
         }

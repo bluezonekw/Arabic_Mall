@@ -10,6 +10,11 @@ TagManager:
   - paymentMethod
   - loading
   - Ground
+  - CinemachineTarget
+  - PlayerView
+  - FloorShop
+  - Shops
+  - Gate
   layers:
   - Default
   - TransparentFX
